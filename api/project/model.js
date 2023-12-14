@@ -5,13 +5,30 @@ module.exports = {
   getProjects,
 }
 
-async function addProject (project) {
-  const id = await db('projects').insert(project)
-  const newProject = await db('projects').where('project_id', id[0])
-
-  return newProject[0]
+function makeBool (int) {
+  return int === 0 ? false : true
 }
 
-function getProjects () {
-  return db('projects')
+async function addProject (project) {
+  const id = await db('projects').insert(project)
+  const arr = await db('projects').where('project_id', id[0])
+  const newProject = {
+    ...arr[0],
+    project_completed: makeBool(arr[0].project_completed)
+  }
+  return newProject
+}
+
+async function getProjects () {
+  const arr = await db('projects')
+  const fixedArr = []
+
+  arr.forEach(obj => {
+    fixedArr.push({
+      ...obj,
+      project_completed: makeBool(obj.project_completed)
+    })
+  })
+
+  return fixedArr
 }
