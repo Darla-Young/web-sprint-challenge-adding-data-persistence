@@ -5,22 +5,13 @@ module.exports = {
   getResources,
 }
 
-function addResource (resource) {
-/* response example:
-{
-  "resource_id":1,
-  "resource_name":"foo",
-  "resource_description":null
-}
-  */
+async function addResource (resource) {
+  const id = await db('resources').insert(resource)
+  const createdResource = await db('resources').where('resource_id', id[0])
+
+  return createdResource[0]
 }
 
 function getResources () {
-    /* response example:
-[{
-  "resource_id":1,
-  "resource_name":"foo",
-  "resource_description":null
-}]
-  */
+  return db('resources')
 }
