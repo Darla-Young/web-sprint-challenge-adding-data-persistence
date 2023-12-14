@@ -13,12 +13,5 @@ async function addProject (project) {
 }
 
 function getProjects () {
-  /* response example:
-[{
-  "project_id":1,
-  "project_name":"bar",
-  "project_description":null,
-  "project_completed":false
-}]
-  */
+  return db('projects')
 }
